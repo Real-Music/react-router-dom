@@ -1,15 +1,25 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form } from "react-router-dom";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
+import { Form, useLoaderData } from "react-router-dom";
+import { getContact } from "../contacts";
+
+export async function loader({ params }) {
+  const contact = await getContact(params.contactId);
+  return { contact };
+}
 
 export default function Contact() {
-  const contact: any = {
-    first: "Your",
-    last: "Name",
-    avatar: "https://robohash.org/you.png?size=200x200",
-    twitter: "your_handle",
-    notes: "Some notes",
-    favorite: true,
-  };
+  const { contact } = useLoaderData();
+
+  // const contact: any = {
+  //   first: "Your",
+  //   last: "Name",
+  //   avatar: "https://robohash.org/you.png?size=200x200",
+  //   twitter: "your_handle",
+  //   notes: "Some notes",
+  //   favorite: true,
+  // };
 
   return (
     <div id="contact">
@@ -66,7 +76,7 @@ export default function Contact() {
   );
 }
 
-function Favorite({ contact }: any) {
+function Favorite({ contact }) {
   const favorite = contact.favorite;
   return (
     <Form method="post">
